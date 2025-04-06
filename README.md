@@ -7,6 +7,7 @@ Framework mẫu để xây dựng các agent thông minh sử dụng Large Langu
 ## 📬 Liên hệ
 
 Email: hmchien.nguyen@gmail.com
+
 YouTube: [Where The Idea Is Unlimited](https://www.youtube.com/@wheretheideaisunlimited)
 
 ## 🌟 Tính năng
@@ -773,118 +774,93 @@ workflow.add_edge("process", "my_custom_node")
 workflow.add_edge("my_custom_node", "continue")
 ```
 
-## 🚀 Hướng dẫn xây dựng Agent hoàn chỉnh từ A-Z
+## 🚀 Hướng dẫn xây dựng Agent hoàn chỉnh
 
-### Bước 1: Thiết lập cơ bản
+### Quy trình từng bước
 
-1. Clone repo và cài đặt dependencies:
-   ```bash
-   git clone https://github.com/yourusername/agent-template.git
-   cd agent-template
-   pip install -r requirements.txt
-   ```
+1. **Thiết lập cơ bản**:
+   - Clone repo và cài đặt dependencies
+   - Cấu hình API keys và model
 
-2. Cấu hình API keys và model:
-   ```bash
-   cp .env.example .env
-   # Chỉnh sửa file .env với API key và model của bạn
-   ```
+2. **Tùy chỉnh Agent**:
+   - Chọn model phù hợp với nhu cầu
+   - Điều chỉnh system prompt
+   - Tạo các tools cần thiết
 
-### Bước 2: Tùy chỉnh Agent
+3. **Triển khai giao diện**:
+   - Lựa chọn giữa CLI và API
+   - Tùy chỉnh cách lưu trữ bộ nhớ
 
-1. **Chọn model phù hợp**:
-   - Cập nhật `MODEL_NAME` trong `.env` hoặc `agent.py`
-   - Cân nhắc sử dụng nhiều model cho các tác vụ khác nhau
+4. **Mở rộng và nâng cao**:
+   - Scale với nhiều model cho các tác vụ khác nhau
+   - Triển khai logic chọn agent thông minh
 
-2. **Điều chỉnh system prompt**:
-   - Sửa đổi hàm `get_simple_assistant_prompt()` trong `utils/prompts.py`
-   - Định hình personality và khả năng của agent
+5. **Kiểm thử và triển khai**:
+   - Kiểm tra các tool riêng lẻ và luồng hội thoại
+   - Triển khai trên môi trường thực tế
 
-3. **Tạo tools cần thiết**:
-   - Tạo file mới trong `tools/` cho mỗi khả năng
-   - Định nghĩa kết quả trả về sử dụng Pydantic
-   - Đăng ký tool với decorator `@agent.tool`
+6. **Giám sát và cải tiến**:
+   - Thu thập feedback
+   - Cập nhật prompt và cấu hình model
 
-### Bước 3: Triển khai giao diện
+### Tích hợp model tùy chỉnh/local
 
-1. **Chọn giữa CLI và API hoặc cả hai**:
-   - Tùy chỉnh các lệnh CLI hoặc endpoint API nếu cần
-   - Tích hợp bộ nhớ để lưu trữ hội thoại
+Bạn có thể tích hợp các mô hình tự host như Ollama:
 
-2. **Tích hợp bộ nhớ**:
-   - Cấu hình `memory_dir` trong `.env` hoặc `config.py`
-   - Tùy chỉnh cách lưu trữ và khôi phục bộ nhớ nếu cần
+```python
+class OllamaProvider(BaseProvider):
+    """Provider cho mô hình Ollama local."""
+    
+    def __init__(self, base_url: str = "http://localhost:11434", model_name: str = "llama3"):
+        self.base_url = base_url
+        self.model_name = model_name
+        
+    async def complete(
+        self, 
+        prompt: str,
+        system_prompt: Optional[str] = None,
+        temperature: float = 0.7,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
+        """Gửi yêu cầu đến Ollama API."""
+        # Implementation...
 
-### Bước 4: Mở rộng và nâng cao
+# Sử dụng provider tùy chỉnh
+ollama_provider = OllamaProvider(model_name="llama3")
+agent = Agent(..., provider=ollama_provider)
+```
 
-1. **Scale với nhiều model**:
-   ```python
-   # Trong agent.py
-   advanced_agent = Agent[Deps, Union[str, Result]](
-       'openai:gpt-4o',
-       system_prompt="...",
-       model_settings=ModelSettings(temperature=0.7)
-   )
-   
-   light_agent = Agent[Deps, Union[str, Result]](
-       'openai:gpt-4o-mini',
-       system_prompt="...",
-       model_settings=ModelSettings(temperature=0.8)
-   )
-   ```
+### Tạo agent mới hoàn toàn
 
-2. **Phân phối tool theo nhu cầu**:
-   ```python
-   # Tool cho tất cả agent
-   @register_for_all_agents
-   async def common_tool(ctx, param): ...
-   
-   # Tool chỉ cho advanced agent
-   @advanced_agent.tool
-   async def complex_tool(ctx, param): ...
-   ```
+Để tạo một agent mới từ đầu trong file riêng:
 
-3. **Triển khai logic chọn agent**:
-   ```python
-   # Trong process_input
-   if "phức tạp" in user_input or len(user_input) > 200:
-       active_agent = advanced_agent
-   else:
-       active_agent = light_agent
-   ```
+```python
+# Trong core/my_agent.py
+custom_agent = Agent[
+    CustomDeps,
+    Union[str, CustomResult]
+](
+    MODEL_NAME,
+    system_prompt="Prompt hệ thống tùy chỉnh",
+    model_settings=ModelSettings(...),
+)
 
-### Bước 5: Kiểm thử và triển khai
+# Đăng ký tools
+@custom_agent.tool
+async def custom_tool(...): ...
 
-1. **Kiểm thử**:
-   - Kiểm tra các tool riêng lẻ
-   - Thử nghiệm các luồng hội thoại hoàn chỉnh
-
-2. **Triển khai**:
-   - CLI: Chạy `python -m agent_template.main`
-   - API: Chạy `python -m agent_template.main --api`
-   - Hoặc tích hợp agent vào ứng dụng lớn hơn
-
-### Bước 6: Giám sát và cải tiến
-
-1. **Thu thập feedback**:
-   - Lưu lịch sử hội thoại và phân tích
-   - Sử dụng LogFire để giám sát nếu cần
-
-2. **Cải tiến liên tục**:
-   - Cập nhật prompt hệ thống
-   - Thêm tool mới
-   - Điều chỉnh cấu hình model
-
-Theo quy trình này, bạn có thể xây dựng một agent hoàn chỉnh, phù hợp với nhu cầu cụ thể và có khả năng mở rộng theo thời gian.
+# Hàm xử lý đầu vào
+async def process_with_custom_agent(user_input: str) -> str:
+    result = await custom_agent.run(user_input)
+    return result.data
+```
 
 ## 🧪 Kiểm thử
 
 ```bash
 # Test API
-python -m pytest tests/test_api.py -v
-
-# Test workflow
-python -m pytest tests/test_workflows.py -v
+cd tests
+python test_api.py
 ```
 
 ## 📚 Tài nguyên
