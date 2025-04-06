@@ -25,7 +25,7 @@ YouTube: [Where The Idea Is Unlimited](https://www.youtube.com/@wheretheideaisun
 
 1. Clone repository:
 ```bash
-git clone [https://github.com/cnguyen14/AIAgentTemplate.git](https://github.com/cnguyen14/AIAgentTemplate.git)
+git clone https://github.com/cnguyen14/AIAgentTemplate.git
 cd AIAgentTemplate
 ```
 
