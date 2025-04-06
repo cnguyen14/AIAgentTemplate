@@ -1,0 +1,154 @@
+{
+  "info": {
+    "name": "Agent Template API",
+    "description": "Collection for testing Agent Template API endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        },
+        "description": "Kiểm tra trạng thái hoạt động của API"
+      },
+      "response": []
+    },
+    {
+      "name": "Create Conversation",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "{{baseUrl}}/conversations",
+          "host": ["{{baseUrl}}"],
+          "path": ["conversations"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"description\": \"Cuộc trò chuyện mới\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Tạo một cuộc trò chuyện mới"
+      },
+      "response": []
+    },
+    {
+      "name": "List Conversations",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/conversations",
+          "host": ["{{baseUrl}}"],
+          "path": ["conversations"]
+        },
+        "description": "Lấy danh sách các cuộc trò chuyện"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Conversation History",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/conversations/{{threadId}}/history",
+          "host": ["{{baseUrl}}"],
+          "path": ["conversations", "{{threadId}}", "history"]
+        },
+        "description": "Lấy lịch sử cuộc trò chuyện"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Conversation",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "{{baseUrl}}/conversations/{{threadId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["conversations", "{{threadId}}"]
+        },
+        "description": "Xóa một cuộc trò chuyện"
+      },
+      "response": []
+    },
+    {
+      "name": "Send Message",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "{{baseUrl}}/send_message",
+          "host": ["{{baseUrl}}"],
+          "path": ["send_message"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"message\": \"Xin chào!\",\n  \"thread_id\": \"{{threadId}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Gửi tin nhắn và nhận phản hồi"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Config",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/config",
+          "host": ["{{baseUrl}}"],
+          "path": ["config"]
+        },
+        "description": "Lấy cấu hình hiện tại của agent"
+      },
+      "response": []
+    },
+    {
+      "name": "Update Config",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "{{baseUrl}}/config",
+          "host": ["{{baseUrl}}"],
+          "path": ["config"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"model_name\": \"gpt-3.5-turbo\",\n  \"temperature\": 0.7\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Cập nhật cấu hình của agent"
+      },
+      "response": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:1234",
+      "type": "string"
+    },
+    {
+      "key": "threadId",
+      "value": "",
+      "type": "string",
+      "description": "ID của cuộc trò chuyện, có thể lấy từ kết quả của Create Conversation"
+    }
+  ]
+} 
