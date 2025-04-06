@@ -1,4 +1,4 @@
-# AI Agent Template by Chien Nguyen
+# AI Agent Template (PydanticAI + LangGraph) by Chien Nguyen
 
 ## 📖 Giới thiệu
 
