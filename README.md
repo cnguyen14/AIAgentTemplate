@@ -43,7 +43,8 @@ cp .env.example .env
 ```
 # Chọn một trong các provider sau
 OPENAI_API_KEY=your_openai_api_key
-ANTHROPIC_API_KEY=your_anthropic_api_key
+#Thêm tùy chọn
+#ANTHROPIC_API_KEY=your_anthropic_api_key
 
 # Tùy chỉnh model (mặc định là openai:gpt-4o-mini)
 MODEL_NAME=openai:gpt-4o
