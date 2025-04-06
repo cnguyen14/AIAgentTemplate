@@ -1,4 +1,4 @@
-# AI Agent Template - Chien Nguyen
+# AI Agent Template by Chien Nguyen
 
 ## 📖 Giới thiệu
 
@@ -25,8 +25,8 @@ YouTube: [Where The Idea Is Unlimited](https://www.youtube.com/@wheretheideaisun
 
 1. Clone repository:
 ```bash
-git clone https://github.com/yourusername/agent-template.git
-cd agent-template
+git clone [https://github.com/cnguyen14/AIAgentTemplate.git](https://github.com/cnguyen14/AIAgentTemplate.git)
+cd AIAgentTemplate
 ```
 
 2. Cài đặt các phụ thuộc:
@@ -43,7 +43,8 @@ cp .env.example .env
 ```
 # Chọn một trong các provider sau
 OPENAI_API_KEY=your_openai_api_key
-ANTHROPIC_API_KEY=your_anthropic_api_key
+#Thêm tùy chọn
+#ANTHROPIC_API_KEY=your_anthropic_api_key
 
 # Tùy chỉnh model (mặc định là openai:gpt-4o-mini)
 MODEL_NAME=openai:gpt-4o
